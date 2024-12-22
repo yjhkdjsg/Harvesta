@@ -10,13 +10,18 @@ const SignUp = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [password, setPassword] = useState("");
+<<<<<<< HEAD
     const [confirmPassword, setConfirmPassword] = useState("");
+=======
+    const [confirmpassword, setConfirmPassword] = useState("");
+>>>>>>> 0e77bbc (inventory)
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
@@ -28,14 +33,32 @@ const SignUp = () => {
             setError(null);
 
             // Clear state variables
+=======
+        if (password !== confirmpassword) {
+            setError("Passwords do not match");
+            return;
+        }
+        const payload = { name, email, phone, address, password ,confirmpassword};
+        console.log("Sending payload:", payload); 
+        try {
+            const res = await axios.post("http://localhost:5000/api/signup", payload);
+            toast.success(res.data.message);
+            setSuccess("Signup successful!");
+            setError(null);
+>>>>>>> 0e77bbc (inventory)
             setName("");
             setEmail("");
             setPhone("");
             setAddress("");
             setPassword("");
             setConfirmPassword("");
+<<<<<<< HEAD
 
             navigate('/login');
+=======
+            const userId = res.data.userId; 
+            navigate(`/dashboard/${userId}`);
+>>>>>>> 0e77bbc (inventory)
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
@@ -55,19 +78,33 @@ const SignUp = () => {
                 </div>
                 <form onSubmit={handleSignup} className="space-y-5">
                     <div>
+<<<<<<< HEAD
                         <label className="font-medium">Full Name</label>
                         <input
                             type="text"
                             required
+=======
+                        <input
+                            type="text"
+                            required
+                            placeholder='Full Name'
+>>>>>>> 0e77bbc (inventory)
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div>
+<<<<<<< HEAD
                         <label className="font-medium">Phone Number</label>
                         <input
                             type="tel"
+=======
+                        
+                        <input
+                            type="tel"
+                            placeholder='Phone Number'
+>>>>>>> 0e77bbc (inventory)
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
                             value={phone}
@@ -75,19 +112,34 @@ const SignUp = () => {
                         />
                     </div>
                     <div>
+<<<<<<< HEAD
                         <label className="font-medium">Email Address</label>
+=======
+                      
+>>>>>>> 0e77bbc (inventory)
                         <input
                             type="email"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
                             value={email}
+<<<<<<< HEAD
+=======
+                            placeholder='Email'
+>>>>>>> 0e77bbc (inventory)
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div>
+<<<<<<< HEAD
                         <label className="font-medium">Address</label>
                         <textarea
                             required
+=======
+                       
+                        <textarea
+                            required
+                            placeholder='Address'
+>>>>>>> 0e77bbc (inventory)
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
@@ -104,12 +156,22 @@ const SignUp = () => {
                         />
                     </div>
                     <div>
+<<<<<<< HEAD
                         <label className="font-medium">Confirm Password</label>
                         <input
                             type="password"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
                             value={confirmPassword}
+=======
+                       
+                        <input
+                            type="password"
+                            placeholder='Confirm Password'
+                            required
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-darkGreen shadow-sm rounded-lg"
+                            value={confirmpassword}
+>>>>>>> 0e77bbc (inventory)
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>

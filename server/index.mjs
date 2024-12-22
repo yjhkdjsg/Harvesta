@@ -17,7 +17,13 @@ app.use(cors({
     origin: 'http://localhost:3000',
 }));
 app.use(bodyParser.json());
+<<<<<<< HEAD
 app.use(cookieParser());
+=======
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+>>>>>>> 0e77bbc (inventory)
 app.use('/api', routes);
 
 app.listen(port, () => {

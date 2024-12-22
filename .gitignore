@@ -1,10 +1,28 @@
+<<<<<<< HEAD
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+=======
+<<<<<<< HEAD
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+=======
+>>>>>>> fffb3faadba7955166536a4b90aadeee14df635b
+>>>>>>> 0e77bbc (inventory)
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+./server
+=======
+# server dependencies
+/server/node_modules
+>>>>>>> fffb3faadba7955166536a4b90aadeee14df635b
+
+>>>>>>> 0e77bbc (inventory)
 .env
 # testing
 /coverage
@@ -22,3 +40,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+./server/.env
+>>>>>>> fffb3faadba7955166536a4b90aadeee14df635b
+>>>>>>> 0e77bbc (inventory)

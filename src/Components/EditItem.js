@@ -1,67 +1,63 @@
-import React, { useState } from 'react';
-<<<<<<< HEAD
-=======
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
->>>>>>> 0e77bbc (inventory)
 
-const SellItems = () => {
+const EditItem = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [itemName, setItemName] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
-    const [image, setImage] = useState(null);
     const [category, setCategory] = useState('');
 
-<<<<<<< HEAD
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add logic to send data to backend
-        console.log({ itemName, price, quantity, image, category });
-=======
+    useEffect(() => {
+        const fetchItemDetails = async () => {
+            try {
+                const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                const response = await axios.get(`http://localhost:5000/api/inventory/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const item = response.data;
+                setItemName(item.itemName);
+                setPrice(item.price);
+                setQuantity(item.quantity);
+                setCategory(item.category);
+            } catch (err) {
+                toast.error('Failed to fetch item details');
+            }
+        };
+
+        fetchItemDetails();
+    }, [id]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('itemName', itemName);
-        formData.append('price', price);
-        formData.append('quantity', quantity);
-        formData.append('category', category);
-        if (image) {
-            formData.append('image', image);
-        }
-
         try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const response = await axios.post('http://localhost:5000/api/sell-items', formData, {
+            await axios.put(`http://localhost:5000/api/inventory/${id}`, {
+                itemName,
+                price,
+                quantity,
+                category
+            }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
-            toast.success(response.data.message);
-        } catch (error) {
-            console.error('Error uploading item:', error);
-            toast.error('Failed to add item to inventory');
+            toast.success('Item updated successfully');
+            navigate('/yourshop');
+        } catch (err) {
+            toast.error('Failed to update item');
         }
->>>>>>> 0e77bbc (inventory)
-    };
-
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
     };
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4">Sell Items</h2>
+            <h2 className="text-2xl font-bold mb-4">Edit Item</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-gray-700">Image</label>
-                    <input
-                        type="file"
-                        onChange={handleImageChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                </div>
                 <div>
                     <label className="block text-gray-700">Item Name</label>
                     <input
@@ -106,11 +102,11 @@ const SellItems = () => {
                     </select>
                 </div>
                 <button type="submit" className="px-4 py-2 bg-darkGreen text-white rounded">
-                    Add Item
+                    Update Item
                 </button>
             </form>
         </div>
     );
 };
 
-export default SellItems;
+export default EditItem;

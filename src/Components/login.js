@@ -119,6 +119,14 @@ const Login = () => {
                         Sign up
                     </Link>
                 </p>
+<<<<<<< HEAD
+=======
+                <p className="text-center mt-2">
+                    <Link to="/forgot" className="font-medium text-darkGreen hover:text-darkBrown">
+                        Forgot Password?
+                    </Link>
+                </p>
+>>>>>>> 0e77bbc (inventory)
             </div>
         </main>
     );

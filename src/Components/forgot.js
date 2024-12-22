@@ -19,6 +19,10 @@ const Forgot = () => {
             const res = await axios.post("http://localhost:5000/api/send-otp", { email });
             toast.success(res.data.message);
             setSuccess("OTP sent to your email!");
+<<<<<<< HEAD
+=======
+            toast.success("OTP sent to your email!");
+>>>>>>> 0e77bbc (inventory)
             setError(null);
             setOtpSent(true);
         } catch (err) {
@@ -38,7 +42,11 @@ const Forgot = () => {
             toast.success(res.data.message);
             setSuccess("Password reset successful!");
             setError(null);
+<<<<<<< HEAD
             navigate('/login'); // Navigate to the login page
+=======
+            navigate('/login'); 
+>>>>>>> 0e77bbc (inventory)
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
