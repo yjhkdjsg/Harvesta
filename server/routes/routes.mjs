@@ -10,6 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import Cart from '../models/cart.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,7 +43,6 @@ const authenticateUser = (req, res, next) => {
         console.log('No auth header');
         return res.status(401).json({ message: 'Unauthorized' });
     }
-
     const token = authHeader.split(' ')[1];
     if (!token) {
         console.log('No token');
@@ -329,4 +329,89 @@ router.delete('/inventory/:id', authenticateUser, async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const { query } = req.query;
+    try {
+        const items = await Inventory.find({ itemName: { $regex: query, $options: 'i' } });
+        res.status(200).json(items);
+    } catch (error) {
+        console.error('Error searching items:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.get('/items/:category', async (req, res) => {
+    const { category } = req.params;
+    
+    try {
+        const items = await Inventory.find({ category }).exec();
+        
+        if (items.length === 0) {
+            return res.status(404).json({ message: 'No items found in this category' });
+        }
+        
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err });
+    }
+});
+
+
+router.post('/cart', authenticateUser, async (req, res) => {
+    const { itemName, price, quantity, image, category } = req.body;
+    try {
+        const newItem = new Cart({
+            itemName,
+            price,
+            quantity,
+            image,
+            category,
+            user: req.userId
+        });
+
+        await newItem.save();
+        res.status(201).json({ message: 'Item added to cart successfully' });
+    } catch (error) {
+        console.error('Error adding item to cart:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.get('/cart', authenticateUser, async (req, res) => {
+    try {
+        const cartItems = await Cart.find({ user: req.userId });
+        res.status(200).json(cartItems);
+    } catch (error) {
+        console.error('Error fetching cart items:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.delete('/user/:id', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        console.log('Received request to delete user with ID:', userId);
+
+        // Ensure the authenticated user is deleting their own account
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('Deleting items for user ID:', userId);
+        await Inventory.deleteMany({ user: userId });
+
+        console.log('Deleting user for user ID:', userId);
+        await user.deleteOne();
+
+        res.status(200).json({ message: 'User and associated items deleted successfully!' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 export default router;

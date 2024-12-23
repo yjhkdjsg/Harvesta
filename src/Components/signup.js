@@ -10,9 +10,9 @@ const SignUp = () => {
     const [address, setAddress] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [userType, setUserType] = useState(''); // Add state for user type
-    const [kccNumber, setKccNumber] = useState(''); // Add state for KCC number
-    const [bankName, setBankName] = useState(''); // Add state for bank name
+    const [userType, setUserType] = useState('');
+    const [kccNumber, setKccNumber] = useState('');
+    const [bankName, setBankName] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -35,6 +35,7 @@ const SignUp = () => {
                 bankName: userType === 'Farmer' ? bankName : null
             });
             toast.success(response.data.message);
+            localStorage.setItem('userType', userType); // Store user type in local storage
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
@@ -162,13 +163,13 @@ const SignUp = () => {
                     >
                         Sign Up
                     </button>
-                    <p>
-                        
-                            Already have an account?
-                        <Link to="/login" className="text-darkGreen hover:underline"> Login</Link>
-                        
-                    </p>
                 </form>
+                <p className="text-center">
+                    Already have an account?
+                    <Link to="/login" className="font-medium text-darkGreen hover:text-darkBrown ml-1">
+                        Login
+                    </Link>
+                </p>
             </div>
         </main>
     );

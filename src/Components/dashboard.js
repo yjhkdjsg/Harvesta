@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import logo from '../Assets/logo.png';
 import ard from '../Assets/ard.jpg';
 import cmf from '../Assets/cmf.jpg';
-import dne from '../Assets/dne.jpg';
-import fruits from '../Assets/fruits.jpg';
+import de from '../Assets/dne.jpg';
+import ff from '../Assets/fruits.jpg';
 import ms from '../Assets/ms.jpg';
-import veg from '../Assets/veg.jpg';
+import fv from '../Assets/veg.jpg';
 import customer from '../Assets/customer.png';
 import farmer from '../Assets/farmer.png';
 import checkout from '../Assets/checkout.png';
@@ -14,13 +15,16 @@ import team from '../Assets/team.png';
 import f15 from '../Assets/15.jpg';
 
 const Dashboard = () => {
+
+    const navigate = useNavigate();
+
     const categories = [
-        { title: 'Atta, Rice & Dal', subtitle: 'Organic', image: ard },
-        { title: 'Fresh Veggies', subtitle: 'Organic & Fresh', image: veg },
-        { title: 'Fresh Fruits', subtitle: 'Fresh from Farm', image: fruits },
-        { title: 'Dairy & Eggs', subtitle: 'Fresh from Farm', image: dne },
-        { title: 'Chicken, Meat & Fish', subtitle: 'Fresh from Farm', image: cmf },
-        { title: 'Masala & Spices', subtitle: 'Freshly Grounded', image: ms }
+        { name: 'Atta, Rice & Dal', image: ard, path: '/category/atta-rice-dal' },
+        { name: 'Fresh Veggies', image: fv, path: '/category/fresh-veggies' },
+        { name: 'Fresh Fruits', image: ff, path: '/category/fresh-fruits' },
+        { name: 'Dairy & Eggs', image: de, path: '/category/dairy-eggs' },
+        { name: 'Chicken, Meat & Fish', image: cmf, path: '/category/chicken-meat-fish' },
+        { name: 'Masala & Spices', image: ms, path: '/category/masala-spices' },
     ];
 
     const counters = [
@@ -31,7 +35,7 @@ const Dashboard = () => {
     ];
 
     return (
-        <div>
+        <div >
             {/** Header */}
             <Navbar />
             <div className="h-20 max-sm:h-40 md:h-30"></div>
@@ -49,50 +53,25 @@ const Dashboard = () => {
 
             {/** Main Content */}
             <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">Shop By Categories</h1>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {categories.map((category, index) => (
-                        <div key={index} className="flex flex-col items-center bg-gray-50 rounded-lg p-4 hover:shadow-lg transition-shadow">
-                            <div className="w-24 h-24 mb-4 bg-white rounded-lg flex items-center justify-center">
-                                <img
-                                    src={category.image}
-                                    alt={category.title}
-                                    className="w-20 h-20 object-contain"
-                                />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="text-sm font-medium text-gray-800">{category.title}</h3>
-                                {category.subtitle && (
-                                    <p className="text-sm text-gray-600">{category.subtitle}</p>
-                                )}
-                            </div>
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">Shop By Categories</h1>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {categories.map(category => (
+                    <div
+                        key={category.name}
+                        className="flex flex-col items-center bg-gray-50 rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"
+                        onClick={() => navigate(category.path)}
+                    >
+                        <div className="w-24 h-24 mb-4 bg-white rounded-lg flex items-center justify-center">
+                            <img src={category.image} className="w-20 h-20 object-contain" alt={category.name} />
                         </div>
-                    ))}
-                </div>
-            </div>
-
-            {/** Featured Products */}
-            <div className="counter overflow-hidden p-10 bg-gray-100">
-                <div className="container mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 justify-center">
-                        {counters.map((counter) => (
-                            <div key={counter.id} className="counter__item bg-white shadow-lg p-7 rounded-lg text-center">
-                                <div className="counter__inner transform hover:scale-105 transition duration-300">
-                                    <div className="thumb mb-4">
-                                        <img src={counter.icon} alt={counter.label} className="mx-auto w-16 h-16" />
-                                    </div>
-                                    <div className="counter__content">
-                                        <div className="maincounter mb-2">
-                                            <h4 className="text-2xl font-bold text-darkGreen">{counter.value.toLocaleString()}</h4>
-                                        </div>
-                                        <h6 className="text-lg font-medium text-gray-700">{counter.label}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                        <div className="text-center">
+                            <h3 className="text-sm font-medium text-gray-800">{category.name}</h3>
+                            <p className="text-sm text-gray-600">Straight from the farms</p>
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
+        </div>
 
             {/** Footer */}
             <footer className="bg-white dark:bg-gray-800">
