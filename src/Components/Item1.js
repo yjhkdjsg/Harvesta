@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
+import toast from 'react-hot-toast'
 import axios from 'axios';
 
 const Item1 = () => {
@@ -36,10 +37,10 @@ const Item1 = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            alert(response.data.message);
+           toast.success(response.data.message);
         } catch (error) {
             console.error('Error adding item to cart:', error);
-            alert('Failed to add item to cart');
+            toast('Failed to add item to cart');
         }
     };
 

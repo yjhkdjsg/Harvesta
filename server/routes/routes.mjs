@@ -7,6 +7,7 @@ import Inventory from '../models/inventory.mjs';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import multer from 'multer';
+import Cart from '../models/cart.mjs';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -385,6 +386,25 @@ router.get('/cart', authenticateUser, async (req, res) => {
         res.status(200).json(cartItems);
     } catch (error) {
         console.error('Error fetching cart items:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.post('/checkout', authenticateUser, async (req, res) => {
+    const { items, totalAmount } = req.body;
+    try {
+        const newOrder = new Order({
+            user: req.userId,
+            items,
+            totalAmount
+        });
+
+        await newOrder.save();
+        await Cart.deleteMany({ user: req.userId }); // Clear the cart after checkout
+
+        res.status(200).json({ message: 'Order placed successfully!' });
+    } catch (error) {
+        console.error('Error during checkout:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

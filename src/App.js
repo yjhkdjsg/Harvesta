@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import Dashboard from './Components/dashboard.js';
 import YourShop from './Components/YourShop.js';
 import YourProfile from './Components/YourProfile.js';
+import Checkout from './Components/Checkout.js'
 import EditItem from './Components/EditItem.js';
 import ProtectedRoute from './Components/ProtectedRoute.js';
 import SearchResults from './Components/SearchResults.js';
@@ -43,6 +44,7 @@ const App = () => {
                     <Route path="/category/dairy-eggs" element={<ProtectedRoute component={Item4} />} />
                     <Route path="/category/chicken-meat-fish" element={<ProtectedRoute component={Item5} />} />
                     <Route path="/category/masala-spices" element={<ProtectedRoute component={Item6} />} />
+                    <Route path="/checkout" element={<ProtectedRoute component={Checkout} />} />
                     <Route path="/cart" element={<ProtectedRoute component={Cart} />} />
                 </Routes>
             </div>
