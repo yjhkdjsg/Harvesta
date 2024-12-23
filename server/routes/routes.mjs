@@ -230,9 +230,9 @@ router.get('/profile', authenticateUser, async (req, res) => {
 router.post('/sell-items', authenticateUser, upload.single('image'), async (req, res) => {
     try {
         const { itemName, price, quantity, category } = req.body;
-        const image = req.file ? req.file.path : null; // Get the uploaded file from multer, if any
+        const image = req.body.image; // Get the Base64 image from the request body
 
-        if (!itemName || !price || !quantity || !category) {
+        if (!itemName || !price || !quantity || !category || !image) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -242,7 +242,7 @@ router.post('/sell-items', authenticateUser, upload.single('image'), async (req,
             quantity,
             category,
             user: req.userId,
-            image // Save the file path if an image was uploaded
+            image // Save the Base64 image
         });
 
         await newItem.save();
@@ -436,4 +436,39 @@ router.delete('/user/:id', authenticateUser, async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+router.post('/checkout', authenticateUser, async (req, res) => {
+    const { items, totalAmount } = req.body;
+    try {
+        const newOrder = new Order({
+            user: req.userId,
+            items,
+            totalAmount
+        });
+
+        await newOrder.save();
+
+        // Update inventory quantities
+        for (const item of items) {
+            const inventoryItem = await Inventory.findById(item.item);
+            if (inventoryItem) {
+                inventoryItem.quantity -= item.quantity;
+                if (inventoryItem.quantity <= 0) {
+                    await Inventory.findByIdAndDelete(inventoryItem._id);
+                } else {
+                    await inventoryItem.save();
+                }
+            }
+        }
+
+        await Cart.deleteMany({ user: req.userId }); // Clear the cart after checkout
+
+        res.status(200).json({ message: 'Order placed successfully!' });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 export default router;

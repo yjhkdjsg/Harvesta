@@ -1,10 +1,8 @@
 import React from "react";
-import Navbar from './Navbar';
 
 const ContactUs = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar />
       <div className="h-20"></div>
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">

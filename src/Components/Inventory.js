@@ -74,7 +74,7 @@ const Inventory = () => {
                     {inventoryItems.map(item => (
                         <tr key={item._id}>
                             <td className="py-2">
-                                {item.image && <img src={`http://localhost:5000/${item.image}`} alt={item.itemName} className="w-16 h-16 object-cover" />}
+                                {item.image && <img src={item.image} alt={item.itemName} className="w-16 h-16 object-cover" />}
                             </td>
                             <td className="py-2">{item.itemName}</td>
                             <td className="py-2">{item.price}</td>

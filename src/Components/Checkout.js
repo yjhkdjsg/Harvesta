@@ -33,7 +33,10 @@ const Checkout = () => {
         try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
             const response = await axios.post('http://localhost:5000/api/checkout', {
-                items: cartItems,
+                items: cartItems.map(item => ({
+                    item: item._id,
+                    quantity: item.quantity
+                })),
                 totalAmount
             }, {
                 headers: {

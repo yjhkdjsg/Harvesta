@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const Item1 = () => {
@@ -37,7 +37,7 @@ const Item1 = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-           toast.success(response.data.message);
+            toast.success(response.data.message);
         } catch (error) {
             console.error('Error adding item to cart:', error);
             toast('Failed to add item to cart');
@@ -53,7 +53,7 @@ const Item1 = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {items.map((item, index) => (
                         <div key={index} className="bg-white rounded-lg overflow-hidden border border-gray-300 relative group">
-                            <img src={item.image} alt={item.itemName} className="w-full h-48 object-cover" />
+                            <img src={item.image} alt={item.itemName} className="w-full h-48 object-cover rounded-t-lg" />
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold">{item.itemName}</h3>
                                 <p className="text-gray-600">Price: ₹{item.price}</p>

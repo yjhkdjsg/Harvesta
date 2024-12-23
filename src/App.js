@@ -21,6 +21,7 @@ import Item4 from './Components/Item4.js';
 import Item5 from './Components/Item5.js';
 import Item6 from './Components/Item6.js';
 import ContactUs from './Components/contactus.js';
+import OrderHistory from './Components/Orderhistory.js';
 
 const App = () => {
     return (
@@ -46,6 +47,7 @@ const App = () => {
                     <Route path="/category/masala-spices" element={<ProtectedRoute component={Item6} />} />
                     <Route path="/checkout" element={<ProtectedRoute component={Checkout} />} />
                     <Route path="/cart" element={<ProtectedRoute component={Cart} />} />
+                    <Route path="/order-history" element={<ProtectedRoute component={OrderHistory} />} />
                 </Routes>
             </div>
         </Router>

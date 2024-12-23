@@ -17,27 +17,33 @@ const SellItems = () => {
         formData.append('price', price);
         formData.append('quantity', quantity);
         formData.append('category', category);
-        if (image) {
-            formData.append('image', image);
-        }
 
-        try {
-            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const response = await axios.post('http://localhost:5000/api/sell-items', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
+        if (image) {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onloadend = async () => {
+                const base64Image = reader.result;
+                formData.append('image', base64Image);
+
+                try {
+                    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                    const response = await axios.post('http://localhost:5000/api/sell-items', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    toast.success(response.data.message);
+                    // Clear form fields
+                    setItemName('');
+                    setPrice('');
+                    setQuantity('');
+                    setImage(null);
+                    setCategory('');
+                } catch (error) {
+                    toast.error('Failed to add item. Please try again.');
                 }
-            });
-            toast.success(response.data.message);
-            // Clear form fields
-            setItemName('');
-            setPrice('');
-            setQuantity('');
-            setImage(null);
-            setCategory('');
-        } catch (error) {
-            toast.error('Failed to add item. Please try again.');
+            };
         }
     };
 

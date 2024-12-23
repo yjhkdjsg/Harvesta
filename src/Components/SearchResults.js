@@ -37,8 +37,8 @@ const SearchResults = () => {
                 {items.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {items.map((item, index) => (
-                            <div key={index} className="bg-white rounded-lg overflow-hidden border border-gray-300 relative group">
-                                <img src={`http://localhost:5000/${item.image}`} alt={item.itemName} className="w-full h-48 object-cover" />
+                            <div key={index} className="bg-white rounded-lg overflow-hidden border border-gray-300 relative group shadow-md hover:shadow-lg transition-shadow duration-300">
+                                <img src={item.image} alt={item.itemName} className="w-full h-48 object-cover rounded-t-lg" />
                                 <div className="p-4">
                                     <h3 className="text-lg font-semibold">{item.itemName}</h3>
                                     <p className="text-gray-600">Price: ₹{item.price}</p>
