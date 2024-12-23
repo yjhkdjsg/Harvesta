@@ -46,7 +46,6 @@ const authenticateUser = (req, res, next) => {
         console.log('No auth header');
         return res.status(401).json({ message: 'Unauthorized' });
     }
-
     const token = authHeader.split(' ')[1];
     if (!token) {
         console.log('No token');
@@ -332,59 +331,60 @@ router.delete('/inventory/:id', authenticateUser, async (req, res) => {
     }
 });
 
-router.post('/reviews',authenticateUser ,async (req, res) => {
+router.get('/search', async (req, res) => {
+    const { query } = req.query;
     try {
-        const { name, rating, feedback, item } = req.body;
-        if (!name || !rating || !feedback || !item) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-
-        const newReview = new Review({
-            name,
-            rating,
-            feedback,
-            item 
-        });
-
-        await newReview.save();
-        res.status(200).json({ message: 'Review submitted successfully!' });
+        const items = await Inventory.find({ itemName: { $regex: query, $options: 'i' } });
+        res.status(200).json(items);
     } catch (error) {
-        console.error('Error submitting review:', error);
+        console.error('Error searching items:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 
-router.get('/order-history', authenticateUser, async (req, res) => {
+router.get('/items/:category', async (req, res) => {
+    const { category } = req.params;
+    
     try {
-        const orders = await Order.find({ user: req.userId }).populate('items.item');
-        res.status(200).json(orders);
+        const items = await Inventory.find({ category }).exec();
+        
+        if (items.length === 0) {
+            return res.status(404).json({ message: 'No items found in this category' });
+        }
+        
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err });
+    }
+});
+
+
+router.post('/cart', authenticateUser, async (req, res) => {
+    const { itemName, price, quantity, image, category } = req.body;
+    try {
+        const newItem = new Cart({
+            itemName,
+            price,
+            quantity,
+            image,
+            category,
+            user: req.userId
+        });
+
+        await newItem.save();
+        res.status(201).json({ message: 'Item added to cart successfully' });
     } catch (error) {
-        console.error('Error fetching order history:', error);
+        console.error('Error adding item to cart:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 
-router.post('/create-order', authenticateUser, async (req, res) => {
+router.get('/cart', authenticateUser, async (req, res) => {
     try {
-        const { items, totalAmount } = req.body;
-        console.log('Received items:', items);
-        console.log('Received totalAmount:', totalAmount);
-        console.log('Authenticated user ID:', req.userId);
-
-        if (!items || !totalAmount) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-
-        const newOrder = new Order({
-            user: req.userId,
-            items,
-            totalAmount
-        });
-
-        await newOrder.save();
-        res.status(200).json({ message: 'Order created successfully!' });
+        const cartItems = await Cart.find({ user: req.userId });
+        res.status(200).json(cartItems);
     } catch (error) {
-        console.error('Error creating order:', error);
+        console.error('Error fetching cart items:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
