@@ -62,7 +62,7 @@ const Inventory = () => {
             <table className="min-w-full bg-white">
                 <thead>
                     <tr>
-                        <th className='py-2'>Item Image</th>
+                        <th className="py-2">Image</th>
                         <th className="py-2">Item Name</th>
                         <th className="py-2">Price</th>
                         <th className="py-2">Quantity</th>
@@ -73,8 +73,8 @@ const Inventory = () => {
                 <tbody>
                     {inventoryItems.map(item => (
                         <tr key={item._id}>
-                            <td className='py-2'>
-                                {item.image && <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.itemName} className="w-16 h-16 object-cover" />}
+                            <td className="py-2">
+                                {item.image && <img src={`http://localhost:5000/${item.image}`} alt={item.itemName} className="w-16 h-16 object-cover" />}
                             </td>
                             <td className="py-2">{item.itemName}</td>
                             <td className="py-2">{item.price}</td>

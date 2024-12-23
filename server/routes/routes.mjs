@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import Order from '../models/order.mjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.mjs';
 import Inventory from '../models/inventory.mjs';
@@ -11,12 +12,14 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const uploadsDir = path.join(__dirname, '../uploads');
 
-
+// Ensure the uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -32,9 +35,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-dotenv.config();
-
 const router = express.Router();
+
+// Serve static files from the uploads directory
+router.use('/uploads', express.static(uploadsDir));
 
 const authenticateUser = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -226,9 +230,8 @@ router.get('/profile', authenticateUser, async (req, res) => {
 router.post('/sell-items', authenticateUser, upload.single('image'), async (req, res) => {
     try {
         const { itemName, price, quantity, category } = req.body;
-        const image = req.file ? req.file.path : null; 
-        console.log('Request Body:', req.body); 
-        console.log('User ID:', req.userId); 
+        const image = req.file ? req.file.path : null; // Get the uploaded file from multer, if any
+
         if (!itemName || !price || !quantity || !category) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -239,7 +242,7 @@ router.post('/sell-items', authenticateUser, upload.single('image'), async (req,
             quantity,
             category,
             user: req.userId,
-            image 
+            image // Save the file path if an image was uploaded
         });
 
         await newItem.save();
@@ -329,4 +332,88 @@ router.delete('/inventory/:id', authenticateUser, async (req, res) => {
     }
 });
 
+router.post('/reviews',authenticateUser ,async (req, res) => {
+    try {
+        const { name, rating, feedback, item } = req.body;
+        if (!name || !rating || !feedback || !item) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        const newReview = new Review({
+            name,
+            rating,
+            feedback,
+            item 
+        });
+
+        await newReview.save();
+        res.status(200).json({ message: 'Review submitted successfully!' });
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.get('/order-history', authenticateUser, async (req, res) => {
+    try {
+        const orders = await Order.find({ user: req.userId }).populate('items.item');
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error('Error fetching order history:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.post('/create-order', authenticateUser, async (req, res) => {
+    try {
+        const { items, totalAmount } = req.body;
+        console.log('Received items:', items);
+        console.log('Received totalAmount:', totalAmount);
+        console.log('Authenticated user ID:', req.userId);
+
+        if (!items || !totalAmount) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        const newOrder = new Order({
+            user: req.userId,
+            items,
+            totalAmount
+        });
+
+        await newOrder.save();
+        res.status(200).json({ message: 'Order created successfully!' });
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+router.delete('/user/:id', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        console.log('Received request to delete user with ID:', userId);
+
+        // Ensure the authenticated user is deleting their own account
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('Deleting items for user ID:', userId);
+        await Inventory.deleteMany({ user: userId });
+
+        console.log('Deleting user for user ID:', userId);
+        await user.deleteOne();
+
+        res.status(200).json({ message: 'User and associated items deleted successfully!' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 export default router;
