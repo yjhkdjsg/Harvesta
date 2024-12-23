@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
->>>>>>> 0e77bbc (inventory)
 import ItemsSold from './ItemsSold';
 import SellItems from './SellItems';
 import Inventory from './Inventory';
@@ -13,10 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const YourShop = () => {
     const [activeTab, setActiveTab] = useState('sell');
     const [dropdownOpen, setDropdownOpen] = useState(false);
-<<<<<<< HEAD
-=======
     const [inventoryItems, setInventoryItems] = useState([]);
->>>>>>> 0e77bbc (inventory)
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -28,8 +21,6 @@ const YourShop = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-<<<<<<< HEAD
-=======
     useEffect(() => {
         // Fetch inventory items for the authenticated user
         const fetchInventoryItems = async () => {
@@ -50,7 +41,6 @@ const YourShop = () => {
         fetchInventoryItems();
     }, []);
 
->>>>>>> 0e77bbc (inventory)
     return (
         <div>
             <Navbar />
@@ -81,11 +71,7 @@ const YourShop = () => {
                 <main className="flex-1 p-8">
                     {activeTab === 'sell' && <SellItems />}
                     {activeTab === 'sold' && <ItemsSold />}
-<<<<<<< HEAD
-                    {activeTab === 'inventory' && <Inventory />}
-=======
                     {activeTab === 'inventory' && <Inventory items={inventoryItems} />}
->>>>>>> 0e77bbc (inventory)
                 </main>
             </div>
         </div>

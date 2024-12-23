@@ -1,17 +1,7 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 0e77bbc (inventory)
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.mjs';
-<<<<<<< HEAD
-import nodemailer from 'nodemailer';
-
-const router = express.Router();
-
-=======
 import Inventory from '../models/inventory.mjs';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
@@ -26,7 +16,7 @@ const __dirname = dirname(__filename);
 
 const uploadsDir = path.join(__dirname, '../uploads');
 
-// Ensure the uploads directory exists
+
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -70,11 +60,10 @@ const authenticateUser = (req, res, next) => {
     }
 };
 
->>>>>>> 0e77bbc (inventory)
 router.post('/signup', async (req, res) => {
     try {
-        const { name, email, phone, address, password, confirmpassword } = req.body;
-        if (!name || !email || !phone || !address || !password || !confirmpassword) {
+        const { name, email, phone, address, password, confirmpassword, userType, kccNumber, bankName } = req.body;
+        if (!name || !email || !phone || !address || !password || !confirmpassword || !userType) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -89,7 +78,16 @@ router.post('/signup', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new User({ name, email, phone, address, password: hashedPassword });
+        const user = new User({
+            name,
+            email,
+            phone,
+            address,
+            password: hashedPassword,
+            userType,
+            kccNumber: userType === 'Farmer' ? kccNumber : null,
+            bankName: userType === 'Farmer' ? bankName : null
+        });
         await user.save();
 
         res.status(200).json({ message: 'Signup successful!' });
@@ -111,16 +109,16 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: "User does not exist" });
         }
 
+        if (user.phone !== phone) {
+            return res.status(400).json({ message: "Invalid phone number" });
+        }
+
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-<<<<<<< HEAD
-        const token = jwt.sign({ id: user._id }, 'your_jwt_secret_key', {
-=======
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
->>>>>>> 0e77bbc (inventory)
             expiresIn: "1d"
         });
 
@@ -153,19 +151,11 @@ router.post('/send-otp', async (req, res) => {
 
         // Send the OTP to the user's email
         const transporter = nodemailer.createTransport({
-<<<<<<< HEAD
-            host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
-            auth: {
-                user: process.env.UNAME, // Replace with your Mailtrap username
-                pass: process.env.PWORD // Replace with your Mailtrap password
-=======
             host: 'smtp.mailtrap.io',
             port: 587,
             auth: {
                 user: process.env.UNAME, // Replace with your Mailtrap username
                 pass: process.env.PWORD  // Replace with your Mailtrap password
->>>>>>> 0e77bbc (inventory)
             }
         });
 
@@ -204,10 +194,6 @@ router.post('/verify-otp', async (req, res) => {
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-<<<<<<< HEAD
-        // Update the user's password and clear the OTP
-=======
->>>>>>> 0e77bbc (inventory)
         user.password = hashedPassword;
         user.otp = null;
         await user.save({ validateBeforeSave: false });
@@ -219,8 +205,6 @@ router.post('/verify-otp', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
-=======
 router.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'User logged out successfully!' });
@@ -242,10 +226,9 @@ router.get('/profile', authenticateUser, async (req, res) => {
 router.post('/sell-items', authenticateUser, upload.single('image'), async (req, res) => {
     try {
         const { itemName, price, quantity, category } = req.body;
-        const image = req.file ? req.file.path : null; // Get the uploaded file from multer, if any
-        console.log('Request Body:', req.body); // Log the request body for debugging
-        console.log('User ID:', req.userId); // Log the user ID for debugging
-
+        const image = req.file ? req.file.path : null; 
+        console.log('Request Body:', req.body); 
+        console.log('User ID:', req.userId); 
         if (!itemName || !price || !quantity || !category) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -256,7 +239,7 @@ router.post('/sell-items', authenticateUser, upload.single('image'), async (req,
             quantity,
             category,
             user: req.userId,
-            image // Save the file path if an image was uploaded
+            image 
         });
 
         await newItem.save();
@@ -346,5 +329,4 @@ router.delete('/inventory/:id', authenticateUser, async (req, res) => {
     }
 });
 
->>>>>>> 0e77bbc (inventory)
 export default router;

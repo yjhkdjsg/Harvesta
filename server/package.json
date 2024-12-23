@@ -19,10 +19,6 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
-<<<<<<< HEAD
-=======
-    "multer": "^1.4.5-lts.1",
->>>>>>> 0e77bbc (inventory)
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9"
   },

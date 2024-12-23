@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
-=======
 import axios from 'axios';
 import toast from 'react-hot-toast';
->>>>>>> 0e77bbc (inventory)
 
 const SellItems = () => {
     const [itemName, setItemName] = useState('');
@@ -12,14 +9,9 @@ const SellItems = () => {
     const [image, setImage] = useState(null);
     const [category, setCategory] = useState('');
 
-<<<<<<< HEAD
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add logic to send data to backend
-        console.log({ itemName, price, quantity, image, category });
-=======
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const formData = new FormData();
         formData.append('itemName', itemName);
         formData.append('price', price);
@@ -34,16 +26,19 @@ const SellItems = () => {
             const response = await axios.post('http://localhost:5000/api/sell-items', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
             toast.success(response.data.message);
+            // Clear form fields
+            setItemName('');
+            setPrice('');
+            setQuantity('');
+            setImage(null);
+            setCategory('');
         } catch (error) {
-            console.error('Error uploading item:', error);
-            toast.error('Failed to add item to inventory');
+            toast.error('Failed to add item. Please try again.');
         }
->>>>>>> 0e77bbc (inventory)
     };
 
     const handleImageChange = (e) => {
