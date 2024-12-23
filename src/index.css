@@ -7,3 +7,14 @@
     @apply m-0 p-0;
   }
 }
+
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+.goog-te-balloon-frame,
+.goog-te-balloon-frame * {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}

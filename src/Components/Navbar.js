@@ -121,6 +121,7 @@ const Navbar = () => {
                                 </button>
                             </form>
                         </div>
+                        <div id="google_translate_element" className="ml-4"></div>
                     </div>
                 </div>
             </nav>
