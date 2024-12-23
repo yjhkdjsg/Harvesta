@@ -1,70 +1,18 @@
-# Getting Started with Create React App
+<p align="center">
+  <img src="./public/favicon.ico" width="300" height="200" />
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# About Harvesta
 
-## Available Scripts
+Harvesta is an innovative online platform that bridges the gap between farmers and consumers, reshaping the traditional supply chain by ensuring fair pricing, eliminating intermediaries, and boosting efficiency. Farmers can showcase their fresh produce—fruits, vegetables, grains, and more—at prices they decide, while consumers enjoy the convenience of browsing and ordering farm-fresh products for doorstep delivery. With features like real-time inventory updates, secure payment systems, and logistics tracking, Harvesta empowers farmers with fair compensation and provides consumers with affordable, high-quality produce. The platform promotes transparency, reduces food waste, and supports a sustainable, equitable marketplace for all stakeholders.
 
-In the project directory, you can run:
+## Features of Harvesta
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **Farmer/Consumer Profiles:** Easy registration and profile management for all users.  
+2. **Produce Listings:** Farmers can list their products with detailed descriptions, including price and quantity.  
+3. **Inventory Tracking:** Real-time updates to ensure accurate product availability.  
+4. **Order Management:** Streamlined processes for order placement, tracking, and updates.  
+5. **Secure Payments:** Safe and reliable transaction methods for peace of mind.  
+6. **Product Search:** Efficient browsing options for consumers, including category filters.  
+7. **User Reviews:** Feedback through product reviews for quality assurance.  
+8. **Local Language Support:** Accessible in multiple local languages to cater to diverse user needs.
