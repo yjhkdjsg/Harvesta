@@ -58,7 +58,7 @@ const Item1 = () => {
             <Navbar />
             <div className="h-20"></div>
             <div className="container mx-auto p-11">
-                <h1 className="text-3xl font-bold mb-6 text-center">Atta, Rice & Dal</h1>
+                <h1 className="text-3xl font-bold mb-6 text-center">Fresh Fruits</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {items.map((item, index) => (
                         <div key={index} className="bg-white rounded-lg overflow-hidden border border-gray-300 relative group">

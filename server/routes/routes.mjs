@@ -12,7 +12,6 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import OrderHistory from '../models/orderhistory.mjs'; 
 
 dotenv.config();
 
@@ -360,6 +359,7 @@ router.get('/items/:category', async (req, res) => {
     }
 });
 
+
 router.post('/cart', authenticateUser, async (req, res) => {
     const { itemName, price, quantity, image, category } = req.body;
     try {
@@ -373,17 +373,6 @@ router.post('/cart', authenticateUser, async (req, res) => {
         });
 
         await newItem.save();
-
-        // Save item to order history
-        const newOrderHistory = new OrderHistory({
-            user: req.userId,
-            items: [{ item: newItem._id, quantity }],
-            totalAmount: price * quantity,
-            orderDate: new Date()
-        });
-
-        await newOrderHistory.save();
-
         res.status(201).json({ message: 'Item added to cart successfully' });
     } catch (error) {
         console.error('Error adding item to cart:', error);
@@ -409,29 +398,8 @@ router.post('/checkout', authenticateUser, async (req, res) => {
             items,
             totalAmount
         });
-
         await newOrder.save();
-
-        // Update inventory quantities
-        for (const item of items) {
-            const inventoryItem = await Inventory.findById(item.item);
-            if (inventoryItem) {
-                console.log(`Updating inventory for item: ${inventoryItem.itemName}, reducing quantity by: ${item.quantity}`);
-                inventoryItem.quantity -= item.quantity;
-                if (inventoryItem.quantity <= 0) {
-                    await Inventory.findByIdAndDelete(inventoryItem._id);
-                    console.log(`Item ${inventoryItem.itemName} deleted from inventory as quantity is zero or less`);
-                } else {
-                    await inventoryItem.save();
-                    console.log(`Item ${inventoryItem.itemName} updated with new quantity: ${inventoryItem.quantity}`);
-                }
-            } else {
-                console.log(`Item with ID ${item.item} not found in inventory`);
-            }
-        }
-
         await Cart.deleteMany({ user: req.userId }); // Clear the cart after checkout
-
         res.status(200).json({ message: 'Order placed successfully!' });
     } catch (error) {
         console.error('Error during checkout:', error);
