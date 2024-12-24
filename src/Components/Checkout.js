@@ -44,7 +44,11 @@ const Checkout = () => {
                 }
             });
             toast.success('Payment successful!');
-            navigate('/order-history');
+            // Clear the order summary
+            setCartItems([]);
+            setTotalAmount(0);
+            // Navigate to payment success page
+            navigate('/payment-success');
         } catch (error) {
             console.error('Error processing payment:', error);
             toast.error('Payment failed. Please try again.');

@@ -8,11 +8,13 @@
   }
 }
 
+/* Hide the Google Translate branding */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-gadget-icon,
 .goog-te-balloon-frame,
-.goog-te-balloon-frame * {
-  display: none !important;
+.goog-te-balloon-frame *,
+.goog-logo-link {
+  color: transparent !important;
 }
 
 body {

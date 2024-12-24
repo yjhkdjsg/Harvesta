@@ -2,8 +2,7 @@ import React from "react";
 
 const ContactUs = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="h-20"></div>
+    <div className="bg-gray-100 max-h-screen">
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
           <h2 className="mb-4 text-4xl tracking-tight text-center text-gray-900 dark:text-white">

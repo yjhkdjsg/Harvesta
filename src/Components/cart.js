@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -30,6 +31,22 @@ const Cart = () => {
         fetchCartItems();
     }, []);
 
+    const handleQuantityChange = async (itemId, quantity) => {
+        try {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const response = await axios.put(`http://localhost:5000/api/cart/${itemId}`, { quantity }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCartItems(response.data);
+            toast.success('Quantity updated successfully');
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+            toast.error('Failed to update quantity');
+        }
+    };
+
     const handleCheckout = () => {
         navigate('/checkout');
     };
@@ -57,7 +74,17 @@ const Cart = () => {
                                     <div className="p-4">
                                         <h3 className="text-lg font-semibold">{item.itemName}</h3>
                                         <p className="text-gray-600">Price: ₹{item.price}</p>
-                                        <p className="text-gray-600">Quantity: {item.quantity}</p>
+                                        <div className="flex items-center mt-2">
+                                            <label className="mr-2 text-gray-600">Quantity:</label>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                max={item.availableQuantity}
+                                                value={item.quantity}
+                                                onChange={(e) => handleQuantityChange(item._id, e.target.value)}
+                                                className="w-16 p-2 border border-gray-300 rounded"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             ))}

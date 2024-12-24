@@ -102,6 +102,7 @@ const Navbar = () => {
                                 </div>
                             )}
                         </div>
+                        <div id="google_translate_element" className="ml-10"></div>
                     </div>
                     <div className="flex items-center justify-between w-full lg:w-auto lg:order-1" id="mobile-menu-2">
                         <div className="relative hidden lg:block">
@@ -121,7 +122,6 @@ const Navbar = () => {
                                 </button>
                             </form>
                         </div>
-                        <div id="google_translate_element" className="ml-4"></div>
                     </div>
                 </div>
             </nav>

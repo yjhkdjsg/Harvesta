@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const SearchResults = () => {
     const location = useLocation();
     const items = location.state?.items || [];
+    const [quantities, setQuantities] = useState({});
+
+    const handleQuantityChange = (itemId, quantity) => {
+        setQuantities({
+            ...quantities,
+            [itemId]: quantity
+        });
+    };
 
     const addToCart = async (item) => {
+        const quantity = quantities[item._id] || 50; // Default to 50 if no quantity is selected
         try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
             const response = await axios.post('http://localhost:5000/api/cart', {
                 itemName: item.itemName,
                 price: item.price,
-                quantity: item.quantity,
+                quantity: quantity,
                 image: item.image,
                 category: item.category
             }, {
@@ -21,10 +31,10 @@ const SearchResults = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            alert(response.data.message);
+            toast.success(response.data.message);
         } catch (error) {
             console.error('Error adding item to cart:', error);
-            alert('Failed to add item to cart');
+            toast.error('Failed to add item to cart');
         }
     };
 
@@ -42,7 +52,15 @@ const SearchResults = () => {
                                 <div className="p-4">
                                     <h3 className="text-lg font-semibold">{item.itemName}</h3>
                                     <p className="text-gray-600">Price: ₹{item.price}</p>
-                                    <p className="text-gray-600">Quantity: {item.quantity}</p>
+                                    <p className="text-gray-600">Available Quantity: {item.quantity}</p>
+                                    <input
+                                        type="number"
+                                        min="50"
+                                        max={item.quantity}
+                                        value={quantities[item._id] || 50}
+                                        onChange={(e) => handleQuantityChange(item._id, e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded mt-2 mb-9"
+                                    />
                                 </div>
                                 <div className="absolute inset-x-0 bottom-0 transition-all duration-200 translate-y-full group-hover:translate-y-0">
                                     <button

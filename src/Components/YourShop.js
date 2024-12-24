@@ -4,22 +4,10 @@ import ItemsSold from './ItemsSold';
 import SellItems from './SellItems';
 import Inventory from './Inventory';
 import Navbar from './Navbar';
-import { useNavigate } from 'react-router-dom';
 
 const YourShop = () => {
     const [activeTab, setActiveTab] = useState('sell');
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [inventoryItems, setInventoryItems] = useState([]);
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
-    };
-
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
 
     useEffect(() => {
         // Fetch inventory items for the authenticated user

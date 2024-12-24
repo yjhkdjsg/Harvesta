@@ -5,10 +5,7 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Web site created using create-react-app" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
@@ -23,6 +20,21 @@
       }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <style>
+      /* Hide Google Translate branding */
+      #google_translate_element .goog-logo-link {
+        display: none !important;
+      }
+
+      #google_translate_element .goog-te-gadget {
+        font-size: 0 !important;
+      }
+
+      #google_translate_element .goog-te-banner-frame {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

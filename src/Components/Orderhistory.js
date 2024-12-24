@@ -22,9 +22,11 @@ const OrderHistory = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
+                console.log('Fetched order items:', response.data); // Debugging statement
                 setOrderItems(response.data);
                 setLoading(false);
             } catch (err) {
+                console.error('Error fetching order items:', err); // Debugging statement
                 setError('Failed to fetch order items');
                 setLoading(false);
             }
@@ -51,37 +53,24 @@ const OrderHistory = () => {
                 <img src={logo} alt="Harvesta Logo" className="w-32 h-32 object-contain" />
             </div>
             <h2 className="text-2xl font-bold mb-4 text-center">Order History</h2>
-            <table className="min-w-full bg-white">
-                <thead>
-                    <tr>
-                        <th className="py-2">Image</th>
-                        <th className="py-2">Item Name</th>
-                        <th className="py-2">Price</th>
-                        <th className="py-2">Quantity</th>
-                        <th className="py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orderItems.map(order => order.items.map(item => (
-                        <tr key={item._id}>
-                            <td className="py-2">
-                                {item.item.image && <img src={`http://localhost:5000/${item.item.image}`} alt={item.item.itemName} className="w-16 h-16 object-cover" />}
-                            </td>
-                            <td className="py-2">{item.item.itemName}</td>
-                            <td className="py-2">{item.item.price}</td>
-                            <td className="py-2">{item.quantity}</td>
-                            <td className="py-2">
-                                <button
-                                    className="px-4 py-2 bg-green-500 text-white rounded"
-                                    onClick={() => handleReview(item.item._id)}
-                                >
-                                    Review
-                                </button>
-                            </td>
-                        </tr>
-                    )))}
-                </tbody>
-            </table>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {orderItems.map(order => order.items.map(item => (
+                    <div key={item._id} className="bg-white rounded-lg overflow-hidden border border-gray-300 relative group shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <img src={item.item.image} alt={item.item.itemName} className="w-full h-48 object-cover rounded-t-lg" />
+                        <div className="p-4">
+                            <h3 className="text-lg font-semibold">{item.item.itemName}</h3>
+                            <p className="text-gray-600">Price: ₹{item.item.price}</p>
+                            <p className="text-gray-600">Quantity: {item.quantity}</p>
+                            <button
+                                className="w-full px-4 py-2 bg-green-500 text-white rounded mt-4"
+                                onClick={() => handleReview(item.item._id)}
+                            >
+                                Review
+                            </button>
+                        </div>
+                    </div>
+                )))}
+            </div>
         </div>
     );
 };

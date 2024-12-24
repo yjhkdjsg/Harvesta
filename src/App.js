@@ -22,6 +22,7 @@ import Item5 from './Components/Item5.js';
 import Item6 from './Components/Item6.js';
 import ContactUs from './Components/contactus.js';
 import OrderHistory from './Components/Orderhistory.js';
+import PaymentSuccess from './Components/payment.js'; // Import the new component
 
 const App = () => {
     return (
@@ -48,6 +49,7 @@ const App = () => {
                     <Route path="/checkout" element={<ProtectedRoute component={Checkout} />} />
                     <Route path="/cart" element={<ProtectedRoute component={Cart} />} />
                     <Route path="/order-history" element={<ProtectedRoute component={OrderHistory} />} />
+                    <Route path="/payment-success" element={<ProtectedRoute component={PaymentSuccess} />} /> {/* Add the new route */}
                 </Routes>
             </div>
         </Router>

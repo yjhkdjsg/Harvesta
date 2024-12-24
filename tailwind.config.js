@@ -12,6 +12,7 @@ module.exports = {
         paleYellow: "#F6FCDF",
         lightBeige: "#ECE3CE",
         darkBrown: "#493628",
+        mossgreen: "#466D1D",
       },
       fontFamily: {
         'anton': ['Anton', 'sans-serif']
