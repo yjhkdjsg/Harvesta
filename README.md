@@ -23,5 +23,3 @@ With features like real-time inventory tracking, secure payment systems, and ord
 **7.Transaction Reviews:** Middlemen can provide feedback on product quality and service for trust and transparency.
 
 **8.Local Language Support:** Multilingual interface for better accessibility and inclusivity across regions.
-
-
